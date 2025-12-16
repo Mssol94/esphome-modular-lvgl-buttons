@@ -11,7 +11,7 @@ ota:
       - lvgl.widget.redraw:
       - lvgl.label.update:
           id: ota_label_primary
-          text: 'Starting OTA!'
+          text: 'Starting OTA...'
       - lvgl.label.update:
           id: ota_label_secondary
           text: 'Wait...'
@@ -44,7 +44,7 @@ ota:
           value: 100
       - lvgl.label.update:
           id: ota_label_primary
-          text: 'Update complete!'
+          text: 'Update complete'
       - lvgl.label.update:
           id: ota_label_secondary
           text: 'Rebooting...'
@@ -57,7 +57,7 @@ ota:
             args: ["x"]
       - lvgl.label.update:
           id: ota_label_primary
-          text: 'Update ERROR!'
+          text: 'Update ERROR'
       - lvgl.label.update:
           id: ota_label_secondary
           text: 'Rebooting...'
@@ -86,7 +86,7 @@ lvgl:
                 align: center
                 text_font: nunito_20
                 text_color: misty_blue
-                text: "Starting OTA!"
+                text: "Starting OTA"
             - label:
                 id: ota_label_secondary
                 y: -20

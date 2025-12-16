@@ -270,6 +270,22 @@ lvgl:
 
   pages:
     - id: ${widget_name}_light_page
+      on_swipe_right:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - logger.log: "Swipe right"
+        - lvgl.page.show:
+            id: main_page
+            animation: OUT_RIGHT
+            time: 300ms
+
+      on_swipe_left:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - logger.log: "Swipe left"
+        - lvgl.page.show:
+            id: main_page
+            animation: OUT_LEFT
+            time: 300ms
+
       bg_color: slate_blue_gray
       widgets:
         # BRIGHTNESS SLIDER

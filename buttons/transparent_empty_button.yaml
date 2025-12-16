@@ -1,8 +1,0 @@
----
-# vars:
-  # uid:
-  # height:
-height: ${height}
-bg_opa: TRANSP
-checkable: no
-id: button_${uid}
