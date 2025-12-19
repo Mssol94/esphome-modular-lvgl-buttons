@@ -52,7 +52,7 @@ lvgl:
     - id: time_style
       scrollbar_mode: "OFF"
       text_font: $text_font
-      text_color: $label_off_on
+      text_color: $label_on_color
       align: center      
 
 select:
