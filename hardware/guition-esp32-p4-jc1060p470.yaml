@@ -181,7 +181,7 @@ microphone:
     i2s_audio_id: i2s_output
     i2s_mode: primary
     adc_type: external
-    i2s_din_pin: GPIO48
+    i2s_din_pin: GPIO11
     sample_rate: 16000
     bits_per_channel: 16bit
     channel: stereo
