@@ -1142,5 +1142,5 @@ script:
 image:
   rgb565:
     alpha_channel:
-      - file: 'assets/images/light/lightbulb.png'
+      - file: '../images/light/lightbulb.png'
         id: lightbulb_image

@@ -6,10 +6,10 @@ globals:
 image:
   rgb565:
     alpha_channel:
-      - file: 'assets/images/loading/homeassistant.png'
+      - file: '../assets/images/loading/homeassistant.png'
         id: ha_img
         resize: 400x82
-      - file: 'assets/images/loading/esphome.png'
+      - file: '../assets/images/loading/esphome.png'
         id: esphome_img
         resize: 320x95
 
