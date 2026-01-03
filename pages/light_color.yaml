@@ -41,9 +41,9 @@ binary_sensor:
   # Track light state (on/off)
   - platform: homeassistant
     id: ${widget_name}_light_state
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     on_state:
-  # On light state change, update the widget color
+      # On light state change, update the widget color
       - script.execute: ${widget_name}_update_lightbulb_color
 
   # Light button control
@@ -51,18 +51,18 @@ binary_sensor:
     id: ${widget_name}_light_btn_control
     widget: ${widget_name}_lightbulb_btn
     on_click:
-  # SHORT press (50-500ms) - ALWAYS toggles the light
+      # SHORT press (50-500ms) - ALWAYS toggles the light
       - min_length: 50ms
         max_length: 500ms
         then:
           - homeassistant.action:
               action: light.toggle
               data:
-                entity_id: "${light_entity}"
+                entity_id: '${light_entity}'
           - lambda: |-
               ESP_LOGD("light_btn", "Short press - toggling light");
-      
-  # LONG press (800-3000ms) - switch mode (only if supported)
+
+      # LONG press (800-3000ms) - switch mode (only if supported)
       - min_length: 800ms
         max_length: 3000ms
         then:
@@ -86,7 +86,7 @@ sensor:
   # Brightness sensor
   - platform: homeassistant
     id: ${widget_name}_light_rgb_sensor_brightness
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     attribute: brightness
     on_value:
       - if:
@@ -104,7 +104,7 @@ sensor:
   # Color temp sensor
   - platform: homeassistant
     id: ${widget_name}_light_sensor_color_temp
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     attribute: color_temp_kelvin
     on_value:
       - if:
@@ -129,12 +129,12 @@ text_sensor:
   # HS Color sensor
   - platform: homeassistant
     id: ${widget_name}_light_sensor_hs
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     attribute: hs_color
     on_value:
       - if:
           condition:
-            lambda: "return x != \"None\" && !x.empty();"
+            lambda: 'return x != "None" && !x.empty();'
           then:
             - lambda: |-
                 std::string s = x;
@@ -161,7 +161,7 @@ text_sensor:
                   - lvgl.slider.update:
                       id: ${widget_name}_light_saturation_slider
                       value: !lambda return id(${widget_name}_current_saturation);
-            
+
             # Update the light color when HS changes from HA
             # But only if we're in HS mode
             - if:
@@ -174,25 +174,25 @@ text_sensor:
   # This sensor reads the supported_color_modes attribute and determines the light's capabilities
   - platform: homeassistant
     id: ${widget_name}_light_supported_modes
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     attribute: supported_color_modes
     on_value:
       - lambda: |-
           // Parse the string with supported modes
           std::string modes = x;
-          
+
           // Check presence of each mode
           id(${widget_name}_supports_color_temp) = (modes.find("color_temp") != std::string::npos);
           id(${widget_name}_supports_hs) = (modes.find("hs") != std::string::npos);
           id(${widget_name}_supports_rgb) = (modes.find("rgb") != std::string::npos);
-          
+
           id(${widget_name}_supports_brightness) = (
             modes.find("brightness") != std::string::npos ||
             id(${widget_name}_supports_hs) ||
             id(${widget_name}_supports_rgb) ||
             id(${widget_name}_supports_color_temp)
           );
-          
+
           ESP_LOGD("light_widget", "═════════════════════════════════════════════════");
           ESP_LOGD("light_widget", "Supported modes: %s", modes.c_str());
           ESP_LOGD("light_widget", "Color temp: %d, HS: %d, RGB: %d, Brightness: %d",
@@ -201,9 +201,9 @@ text_sensor:
             id(${widget_name}_supports_rgb),
             id(${widget_name}_supports_brightness)
           );
-          
+
           // Smart selection of the initial mode
-          
+
           if (id(${widget_name}_supports_hs) || id(${widget_name}_supports_rgb)) {
             // If HS/RGB is supported - start with it (more versatile)
             id(${widget_name}_is_temp_mode) = false;
@@ -217,22 +217,21 @@ text_sensor:
             id(${widget_name}_is_temp_mode) = false;
             ESP_LOGD("light_widget", "→ Initial mode: N/A (no color modes)");
           }
-          
+
           ESP_LOGD("light_widget", "═════════════════════════════════════════════════");
       - script.execute: ${widget_name}_update_widget_visibility
 
   - platform: homeassistant
     id: ${widget_name}_light_name
-    entity_id: "${light_entity}"
+    entity_id: '${light_entity}'
     attribute: friendly_name
-    on_value: 
+    on_value:
       then:
         - lvgl.label.update:
             id: ${widget_name}_light_name_label
             text: !lambda return x;
 
 lvgl:
-
   gradients:
     - id: ${widget_name}_hue_gradient
       direction: ver
@@ -272,7 +271,7 @@ lvgl:
     - id: ${widget_name}_light_page
       on_swipe_right:
         - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
-        - logger.log: "Swipe right"
+        - logger.log: 'Swipe right'
         - lvgl.page.show:
             id: main_page
             animation: OUT_RIGHT
@@ -280,7 +279,7 @@ lvgl:
 
       on_swipe_left:
         - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
-        - logger.log: "Swipe left"
+        - logger.log: 'Swipe left'
         - lvgl.page.show:
             id: main_page
             animation: OUT_LEFT
@@ -323,19 +322,19 @@ lvgl:
                     radius: 10
                   knob:
                     bg_opa: transp
-                  
+
                   # on_value to update the light color in real time
                   on_value:
                     - globals.set:
                         id: ${widget_name}_current_brightness
                         value: !lambda return int(x);
                     - script.execute: ${widget_name}_update_lightbulb_color
-                  
+
                   on_release:
                     - homeassistant.action:
                         action: light.turn_on
                         data:
-                          entity_id: "${light_entity}"
+                          entity_id: '${light_entity}'
                           brightness: !lambda return int(x);
 
         # SATURATION SLIDER
@@ -373,26 +372,26 @@ lvgl:
                     radius: 10
                   knob:
                     bg_opa: transp
-                  
+
                   # on_value to update the light color in real time
                   on_value:
                     - globals.set:
                         id: ${widget_name}_current_saturation
                         value: !lambda return x;
                     - script.execute: ${widget_name}_update_lightbulb_color
-                  
+
                   on_release:
                     - homeassistant.action:
                         action: light.turn_on
                         data:
-                          entity_id: "${light_entity}"
+                          entity_id: '${light_entity}'
                         data_template:
-                          hs_color: "{{ (hue|float, sat|float)|list }}"
+                          hs_color: '{{ (hue|float, sat|float)|list }}'
                         variables:
                           hue: !lambda return id(${widget_name}_current_hue);
                           sat: !lambda return x;
 
-        # LIGHT NAME                  
+        # LIGHT NAME
         - label:
             id: ${widget_name}_light_name_label
             y: -420
@@ -404,7 +403,7 @@ lvgl:
             text_font: nunito_18
             text_align: center
             text_color: misty_blue
-            text: "Friendly name"
+            text: 'Friendly name'
 
         # Home
         - label:
@@ -419,8 +418,8 @@ lvgl:
             align: bottom_left
             text: $mdi_home
             on_short_click:
-                then:
-                  lvgl.page.show: main_page           
+              then:
+                lvgl.page.show: main_page
 
         # LIGHT ARC
         - obj:
@@ -567,9 +566,9 @@ lvgl:
                           - homeassistant.action:
                               action: light.turn_on
                               data:
-                                entity_id: "${light_entity}"
+                                entity_id: '${light_entity}'
                               data_template:
-                                hs_color: "{{ (hue|float, sat|float)|list }}"
+                                hs_color: '{{ (hue|float, sat|float)|list }}'
                               variables:
                                 hue: !lambda return x;
                                 sat: !lambda return id(${widget_name}_current_saturation);
@@ -613,7 +612,7 @@ lvgl:
                           - homeassistant.action:
                               action: light.turn_on
                               data:
-                                entity_id: "${light_entity}"
+                                entity_id: '${light_entity}'
                                 color_temp_kelvin: !lambda return int(x);
 
         # LIGHTBULB
@@ -644,7 +643,7 @@ lvgl:
                   bg_opa: cover
                   border_opa: transp
                   shadow_opa: transp
-                  
+
               - image:
                   id: ${widget_name}_lightbulb_image
                   x: 0
@@ -652,10 +651,9 @@ lvgl:
                   align: center
                   src: lightbulb_image
 
-
         # BACK
         - obj:
-            id: ${widget_name}_light_back_btn 
+            id: ${widget_name}_light_back_btn
             x: 150
             y: 0
             width: 80
@@ -680,9 +678,9 @@ lvgl:
                   shadow_opa: transp
                   radius: 15
             # on_click:
-              # - lvgl.widget.hide: light_select_widget
-              # - delay: 100ms
-              # - lvgl.page.show: home_page
+            # - lvgl.widget.hide: light_select_widget
+            # - delay: 100ms
+            # - lvgl.page.show: home_page
 
 script:
   # ═══════════════════════════════════════════════════════════════════════════
@@ -730,19 +728,19 @@ script:
     then:
       - lambda: |-
           int r = 255, g = 255, b = 255;
-          
+
           // ═══════════════════════════════════════════════════════════════════
           // CHECK: Does the light support color modes?
           // ═══════════════════════════════════════════════════════════════════
           bool has_color_modes = id(${widget_name}_supports_hs) || 
                                  id(${widget_name}_supports_rgb) || 
                                  id(${widget_name}_supports_color_temp);
-          
+
           // ═══════════════════════════════════════════════════════════════════
           // CHECK: Is the light turned on?
           // ═══════════════════════════════════════════════════════════════════
           bool is_light_on = id(${widget_name}_light_state).state;
-          
+
           if (!is_light_on) {
             // ═════════════════════════════════════════════════════════════════
             // LIGHT IS OFF -> GREY COLOR (regardless of mode)
@@ -870,18 +868,17 @@ script:
               
             }
           }
-          
+
           // ═══════════════════════════════════════════════════════════════════
           // APPLYING COLOR TO THE WIDGET
           // ═══════════════════════════════════════════════════════════════════
-          
+
           // Form the color as 0xRRGGBB
           uint32_t color = (r << 16) | (g << 8) | b;
-          
+
           // Set the bulb widget color
           lv_obj_set_style_bg_color(id(${widget_name}_lightbulb_color), lv_color_hex(color), 0);
           //lv_obj_set_style_text_color(id(${widget_name}_icon), lv_color_hex(color), 0);
-
 
   # ═══════════════════════════════════════════════════════════════════════════
   # SCRIPT: Update widget visibility
@@ -896,7 +893,7 @@ script:
           bool has_arc_modes = id(${widget_name}_supports_hs) || 
                                id(${widget_name}_supports_rgb) || 
                                id(${widget_name}_supports_color_temp);
-                          
+
       - if:
           condition:
             lambda: |-
@@ -967,15 +964,15 @@ script:
                 align: bottom_mid
                 x: 0
 
-  # ─────────────────────────────────────────────────────────────────────
-  # CONTROL VISIBILITY OF BRIGHTNESS SLIDER
-  # ─────────────────────────────────────────────────────────────────────
+      # ─────────────────────────────────────────────────────────────────────
+      # CONTROL VISIBILITY OF BRIGHTNESS SLIDER
+      # ─────────────────────────────────────────────────────────────────────
       - if:
           condition:
             lambda: 'return id(${widget_name}_supports_brightness);'
           then:
             - lvgl.widget.show: ${widget_name}_light_brightness_background
-            
+
             # Check mode (with arcs or without)
             - if:
                 condition:
@@ -1036,10 +1033,10 @@ script:
 
           else:
             - lvgl.widget.hide: ${widget_name}_light_brightness_background
-      
-  # ─────────────────────────────────────────────────────────────────────
-  # CONTROL VISIBILITY OF SATURATION SLIDER
-  # ─────────────────────────────────────────────────────────────────────
+
+      # ─────────────────────────────────────────────────────────────────────
+      # CONTROL VISIBILITY OF SATURATION SLIDER
+      # ─────────────────────────────────────────────────────────────────────
       - if:
           condition:
             lambda: 'return id(${widget_name}_supports_hs) || id(${widget_name}_supports_rgb);'
@@ -1064,10 +1061,10 @@ script:
 
           else:
             - lvgl.widget.hide: ${widget_name}_light_saturation_background
-      
-  # ─────────────────────────────────────────────────────────────────────
-  # CONTROL VISIBILITY OF HS ARC AND GRADIENT
-  # ─────────────────────────────────────────────────────────────────────
+
+      # ─────────────────────────────────────────────────────────────────────
+      # CONTROL VISIBILITY OF HS ARC AND GRADIENT
+      # ─────────────────────────────────────────────────────────────────────
       - if:
           condition:
             lambda: 'return id(${widget_name}_supports_hs) || id(${widget_name}_supports_rgb);'
@@ -1088,10 +1085,10 @@ script:
             # HS not supported - always hide
             - lvgl.widget.hide: ${widget_name}_hue_gradient_obj
             - lvgl.widget.hide: ${widget_name}_light_arc_hue
-      
-  # ─────────────────────────────────────────────────────────────────────
-  # CONTROL VISIBILITY OF COLOR TEMP ARC AND GRADIENT
-  # ─────────────────────────────────────────────────────────────────────
+
+      # ─────────────────────────────────────────────────────────────────────
+      # CONTROL VISIBILITY OF COLOR TEMP ARC AND GRADIENT
+      # ─────────────────────────────────────────────────────────────────────
       - if:
           condition:
             lambda: 'return id(${widget_name}_supports_color_temp);'
@@ -1112,10 +1109,10 @@ script:
             # Color Temp not supported - always hide
             - lvgl.widget.hide: ${widget_name}_color_temp_gradient_obj
             - lvgl.widget.hide: ${widget_name}_light_arc_color_temp
-      
-  # ─────────────────────────────────────────────────────────────────────
-  # AUTOMATIC MODE SELECTION (if the bulb supports only one)
-  # ─────────────────────────────────────────────────────────────────────
+
+      # ─────────────────────────────────────────────────────────────────────
+      # AUTOMATIC MODE SELECTION (if the bulb supports only one)
+      # ─────────────────────────────────────────────────────────────────────
       - if:
           condition:
             lambda: |-
@@ -1123,7 +1120,6 @@ script:
               return !(id(${widget_name}_supports_color_temp) && 
                       (id(${widget_name}_supports_hs) || id(${widget_name}_supports_rgb)));
           then:
-            
             # Automatic mode selection
             - if:
                 condition:
@@ -1145,6 +1141,6 @@ script:
 
 image:
   rgb565:
-    alpha_channel:  
-      - file: 'esphome-modular-lvgl-buttons/assets/images/light/lightbulb.png'
-        id: lightbulb_image                        
+    alpha_channel:
+      - file: 'assets/images/light/lightbulb.png'
+        id: lightbulb_image

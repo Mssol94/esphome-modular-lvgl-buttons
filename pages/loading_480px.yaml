@@ -5,11 +5,11 @@ globals:
 
 image:
   rgb565:
-    alpha_channel:    
-      - file: 'esphome-modular-lvgl-buttons/assets/images/loading/homeassistant.png'
+    alpha_channel:
+      - file: 'assets/images/loading/homeassistant.png'
         id: ha_img
         resize: 400x82
-      - file: 'esphome-modular-lvgl-buttons/assets/images/loading/esphome.png'
+      - file: 'assets/images/loading/esphome.png'
         id: esphome_img
         resize: 320x95
 
@@ -48,7 +48,7 @@ lvgl:
                       align: left_mid
                       text_font: nunito_20
                       text_color: misty_blue
-                      text: "Booting..."
+                      text: 'Booting...'
                   - spinner:
                       id: boot_homeassistant_spiner
                       width: 50
@@ -81,7 +81,7 @@ lvgl:
                       y: 0
                       text_font: nunito_20
                       text_color: misty_blue
-                      text: "Sync with HA..."
+                      text: 'Sync with HA...'
                   - bar:
                       id: boot_synchronization_bar
                       y: 0
@@ -148,9 +148,9 @@ api:
           lambda: 'return (0 == client_info.find("Home Assistant "));'
         then:
           - script.execute: update_loading_page
-          # - lvgl.label.update: 
-              # id: ha_status
-              # text_color: blue
+          # - lvgl.label.update:
+          # id: ha_status
+          # text_color: blue
           - script.execute: on_ha_connected
 
   on_client_disconnected:
@@ -161,6 +161,6 @@ api:
           - globals.set:
               id: ha_connected
               value: 'false'
-          # - lvgl.label.update: 
-              # id: ha_status
-              # text_color: steel_blue
+          # - lvgl.label.update:
+          # id: ha_status
+          # text_color: steel_blue
