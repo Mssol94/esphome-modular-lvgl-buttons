@@ -1,78 +1,78 @@
 ---
 image:
-  - file: ../assets/solar/house.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/house.svg@main
     id: house_icon_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/grid_icon.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/grid_icon.svg@main
     id: grid_icon_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/produced_icon.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/produced_icon.svg@main
     id: produced_icon_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/down_arrow.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/down_arrow.svg@main
     id: down_arrow_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/up_arrow.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/up_arrow.svg@main
     id: up_arrow_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery.svg@main
     id: battery_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/grid_ok.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/grid_ok.svg@main
     id: grid_ok_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/grid_down.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/grid_down.svg@main
     id: grid_down_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery_100.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery_100.svg@main
     id: battery_100_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery_80.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery_80.svg@main
     id: battery_80_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery_60.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery_60.svg@main
     id: battery_60_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery_30.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery_30.svg@main
     id: battery_30_${size}
     resize: ${size}x${size}
     type: RGB565
     transparency: alpha_channel
 
-  - file: ../assets/solar/battery_10.svg
+  - file: github://Mssol94/esphome-modular-lvgl-buttons/solar/battery_10.svg@main
     id: battery_10_${size}
     resize: ${size}x${size}
     type: RGB565

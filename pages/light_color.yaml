@@ -1142,5 +1142,5 @@ script:
 image:
   rgb565:
     alpha_channel:
-      - file: '../images/light/lightbulb.png'
+      - file: 'github://Mssol94/esphome-modular-lvgl-buttons/assets/images/light/lightbulb.png@main'
         id: lightbulb_image
